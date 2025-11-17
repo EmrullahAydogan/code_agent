@@ -4,6 +4,7 @@ import { AgentsPage } from './pages/AgentsPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { AgentDetailPage } from './pages/AgentDetailPage';
+import { AgentChatPage } from './pages/AgentChatPage';
 import { TemplatesPage } from './pages/TemplatesPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { WorkflowsPage } from './pages/WorkflowsPage';
@@ -13,19 +14,22 @@ import { KnowledgeBasePage } from './pages/KnowledgeBasePage';
 import { PluginsPage } from './pages/PluginsPage';
 import { WebSocketProvider } from './providers/WebSocketProvider';
 import { ToastProvider } from './providers/ToastProvider';
+import { ThemeProvider } from './providers/ThemeProvider';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
 function App() {
   return (
     <ErrorBoundary>
-      <ToastProvider>
-        <WebSocketProvider>
-          <BrowserRouter>
+      <ThemeProvider>
+        <ToastProvider>
+          <WebSocketProvider>
+            <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/agents" replace />} />
             <Route path="agents" element={<AgentsPage />} />
             <Route path="agents/:id" element={<AgentDetailPage />} />
+            <Route path="agents/:id/chat" element={<AgentChatPage />} />
             <Route path="templates" element={<TemplatesPage />} />
             <Route path="projects" element={<ProjectsPage />} />
             <Route path="workflows" element={<WorkflowsPage />} />
