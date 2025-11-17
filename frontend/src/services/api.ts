@@ -16,6 +16,14 @@ import {
   CreateAgentFromTemplate,
   AgentMetrics,
   TokenUsage,
+  Workflow,
+  WorkflowStep,
+  CodeReview,
+  TestSuite,
+  TestCase,
+  KnowledgeBase,
+  SearchResult,
+  Plugin,
 } from '@local-code-agent/shared';
 
 const API_BASE_URL = '/api';
@@ -110,6 +118,89 @@ export const analyticsApi = {
     startDate?: string;
     endDate?: string;
   }) => api.get<ApiResponse<any[]>>('/analytics/cost-breakdown', { params }),
+};
+
+// Workflows
+export const workflowsApi = {
+  getAll: (params?: { projectId?: string; status?: string }) =>
+    api.get<ApiResponse<Workflow[]>>('/workflows', { params }),
+  getById: (id: string) => api.get<ApiResponse<Workflow>>(`/workflows/${id}`),
+  create: (data: {
+    name: string;
+    description?: string;
+    type: string;
+    steps: WorkflowStep[];
+    projectId?: string;
+  }) => api.post<ApiResponse<Workflow>>('/workflows', data),
+  execute: (id: string) => api.post<ApiResponse<Workflow>>(`/workflows/${id}/execute`),
+  cancel: (id: string) => api.post<ApiResponse<Workflow>>(`/workflows/${id}/cancel`),
+};
+
+// Code Reviews
+export const codeReviewsApi = {
+  getAll: (params?: { projectId?: string; agentId?: string }) =>
+    api.get<ApiResponse<CodeReview[]>>('/code-reviews', { params }),
+  getById: (id: string) => api.get<ApiResponse<CodeReview>>(`/code-reviews/${id}`),
+  create: (data: {
+    agentId: string;
+    projectId: string;
+    files?: string[];
+    focus?: string[];
+  }) => api.post<ApiResponse<CodeReview>>('/code-reviews', data),
+  getStats: (projectId: string) =>
+    api.get<ApiResponse<any>>(`/code-reviews/stats/${projectId}`),
+};
+
+// Testing
+export const testingApi = {
+  getAll: (params?: { projectId?: string; status?: string }) =>
+    api.get<ApiResponse<TestSuite[]>>('/testing', { params }),
+  getById: (id: string) => api.get<ApiResponse<TestSuite>>(`/testing/${id}`),
+  create: (data: {
+    agentId: string;
+    projectId: string;
+    name: string;
+    description?: string;
+    filePath?: string;
+    testCases?: TestCase[];
+    autoGenerate?: boolean;
+  }) => api.post<ApiResponse<TestSuite>>('/testing', data),
+  run: (id: string) => api.post<ApiResponse<TestSuite>>(`/testing/${id}/run`),
+};
+
+// Knowledge Bases
+export const knowledgeBasesApi = {
+  getAll: (params?: { projectId?: string }) =>
+    api.get<ApiResponse<KnowledgeBase[]>>('/knowledge-bases', { params }),
+  getById: (id: string) => api.get<ApiResponse<KnowledgeBase>>(`/knowledge-bases/${id}`),
+  create: (data: {
+    name: string;
+    description?: string;
+    projectId?: string;
+  }) => api.post<ApiResponse<KnowledgeBase>>('/knowledge-bases', data),
+  index: (id: string, data: { files?: string[] }) =>
+    api.post<ApiResponse<KnowledgeBase>>(`/knowledge-bases/${id}/index`, data),
+  search: (id: string, data: { query: string; limit?: number }) =>
+    api.post<ApiResponse<SearchResult[]>>(`/knowledge-bases/${id}/search`, data),
+  delete: (id: string) => api.delete<ApiResponse>(`/knowledge-bases/${id}`),
+};
+
+// Plugins
+export const pluginsApi = {
+  getAll: (params?: { enabled?: boolean; type?: string }) =>
+    api.get<ApiResponse<Plugin[]>>('/plugins', { params }),
+  getById: (id: string) => api.get<ApiResponse<Plugin>>(`/plugins/${id}`),
+  install: (data: {
+    name: string;
+    description?: string;
+    version: string;
+    type: string;
+    author?: string;
+    config?: any;
+    permissions?: string[];
+  }) => api.post<ApiResponse<Plugin>>('/plugins', data),
+  toggle: (id: string) => api.post<ApiResponse<Plugin>>(`/plugins/${id}/toggle`),
+  delete: (id: string) => api.delete<ApiResponse>(`/plugins/${id}`),
 };
 
 export default api;
