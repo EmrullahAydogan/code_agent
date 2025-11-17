@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Bot, FolderKanban, Settings, Activity } from 'lucide-react';
+import { Bot, FolderKanban, Settings, Sparkles, BarChart3 } from 'lucide-react';
 import clsx from 'clsx';
 import { useWebSocket } from '../providers/WebSocketProvider';
 
@@ -9,7 +9,9 @@ export const Layout = () => {
 
   const navigation = [
     { name: 'Agents', href: '/agents', icon: Bot },
+    { name: 'Templates', href: '/templates', icon: Sparkles },
     { name: 'Projects', href: '/projects', icon: FolderKanban },
+    { name: 'Analytics', href: '/analytics', icon: BarChart3 },
     { name: 'Settings', href: '/settings', icon: Settings },
   ];
 
