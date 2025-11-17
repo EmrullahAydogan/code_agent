@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMutation, useNavigate } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { X, Sparkles } from 'lucide-react';
 import { templatesApi } from '../services/api';
 import { AgentTemplate } from '@local-code-agent/shared';

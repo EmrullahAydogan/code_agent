@@ -118,7 +118,7 @@ export function taskRoutes(io: SocketIOServer) {
     try {
       const taskId = req.params.id;
 
-      const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(taskId);
+      const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(taskId) as any;
       if (!task) {
         return res.status(404).json({ success: false, error: 'Task not found' });
       }

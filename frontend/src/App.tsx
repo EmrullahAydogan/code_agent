@@ -12,11 +12,15 @@ import { TestingPage } from './pages/TestingPage';
 import { KnowledgeBasePage } from './pages/KnowledgeBasePage';
 import { PluginsPage } from './pages/PluginsPage';
 import { WebSocketProvider } from './providers/WebSocketProvider';
+import { ToastProvider } from './providers/ToastProvider';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 function App() {
   return (
-    <WebSocketProvider>
-      <BrowserRouter>
+    <ErrorBoundary>
+      <ToastProvider>
+        <WebSocketProvider>
+          <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/agents" replace />} />
@@ -33,8 +37,10 @@ function App() {
             <Route path="settings" element={<SettingsPage />} />
           </Route>
         </Routes>
-      </BrowserRouter>
-    </WebSocketProvider>
+          </BrowserRouter>
+        </WebSocketProvider>
+      </ToastProvider>
+    </ErrorBoundary>
   );
 }
 

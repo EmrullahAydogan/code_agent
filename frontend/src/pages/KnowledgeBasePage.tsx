@@ -44,7 +44,7 @@ export const KnowledgeBasePage = () => {
     setIsSearching(true);
     try {
       const response = await knowledgeBasesApi.search(kbId, { query, limit: 10 });
-      setSearchResults(response.data.data);
+      setSearchResults(response.data.data || []);
     } catch (error) {
       console.error('Search error:', error);
     } finally {

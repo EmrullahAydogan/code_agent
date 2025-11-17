@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../database';
-import { TestSuite, CreateTestSuiteRequest } from '@local-code-agent/shared';
+import { TestSuite, TestCase, CreateTestSuiteRequest } from '@local-code-agent/shared';
 import { generateTests, executeTests } from '../services/test-runner';
 
 export function testingRoutes() {
@@ -65,7 +65,7 @@ export function testingRoutes() {
         return res.status(404).json({ success: false, error: 'Project not found' });
       }
 
-      let testCases = [];
+      let testCases: TestCase[] = [];
 
       if (request.autoGenerate) {
         // Generate tests using AI
