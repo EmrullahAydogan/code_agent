@@ -168,6 +168,146 @@ export function initDatabase() {
     // Column already exists
   }
 
+  // Create workflows table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS workflows (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      description TEXT,
+      type TEXT NOT NULL,
+      steps TEXT NOT NULL,
+      project_id TEXT,
+      created_by TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending',
+      current_step_index INTEGER,
+      result TEXT,
+      error TEXT,
+      created_at INTEGER NOT NULL,
+      started_at INTEGER,
+      completed_at INTEGER,
+      FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE SET NULL,
+      FOREIGN KEY (created_by) REFERENCES agents(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Create agent_communications table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS agent_communications (
+      id TEXT PRIMARY KEY,
+      from_agent_id TEXT NOT NULL,
+      to_agent_id TEXT NOT NULL,
+      message TEXT NOT NULL,
+      context TEXT,
+      reply_to TEXT,
+      created_at INTEGER NOT NULL,
+      read_at INTEGER,
+      FOREIGN KEY (from_agent_id) REFERENCES agents(id) ON DELETE CASCADE,
+      FOREIGN KEY (to_agent_id) REFERENCES agents(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Create agent_delegations table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS agent_delegations (
+      id TEXT PRIMARY KEY,
+      from_agent_id TEXT NOT NULL,
+      to_agent_id TEXT NOT NULL,
+      task_id TEXT NOT NULL,
+      reason TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'pending',
+      result TEXT,
+      created_at INTEGER NOT NULL,
+      completed_at INTEGER,
+      FOREIGN KEY (from_agent_id) REFERENCES agents(id) ON DELETE CASCADE,
+      FOREIGN KEY (to_agent_id) REFERENCES agents(id) ON DELETE CASCADE,
+      FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Create plugins table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS plugins (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE,
+      description TEXT NOT NULL,
+      version TEXT NOT NULL,
+      type TEXT NOT NULL,
+      author TEXT NOT NULL,
+      enabled INTEGER NOT NULL DEFAULT 1,
+      config TEXT,
+      permissions TEXT NOT NULL,
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL
+    )
+  `);
+
+  // Create code_reviews table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS code_reviews (
+      id TEXT PRIMARY KEY,
+      agent_id TEXT NOT NULL,
+      project_id TEXT NOT NULL,
+      files TEXT NOT NULL,
+      issues TEXT NOT NULL,
+      summary TEXT NOT NULL,
+      score INTEGER NOT NULL,
+      created_at INTEGER NOT NULL,
+      FOREIGN KEY (agent_id) REFERENCES agents(id) ON DELETE CASCADE,
+      FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Create test_suites table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS test_suites (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      description TEXT,
+      project_id TEXT NOT NULL,
+      agent_id TEXT NOT NULL,
+      test_cases TEXT NOT NULL,
+      coverage REAL,
+      status TEXT NOT NULL DEFAULT 'pending',
+      total_tests INTEGER NOT NULL DEFAULT 0,
+      passed_tests INTEGER NOT NULL DEFAULT 0,
+      failed_tests INTEGER NOT NULL DEFAULT 0,
+      created_at INTEGER NOT NULL,
+      completed_at INTEGER,
+      FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
+      FOREIGN KEY (agent_id) REFERENCES agents(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Create knowledge_bases table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS knowledge_bases (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      description TEXT,
+      project_id TEXT NOT NULL,
+      documents INTEGER NOT NULL DEFAULT 0,
+      chunks INTEGER NOT NULL DEFAULT 0,
+      indexed INTEGER NOT NULL DEFAULT 0,
+      indexed_at INTEGER,
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL,
+      FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Create document_chunks table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS document_chunks (
+      id TEXT PRIMARY KEY,
+      knowledge_base_id TEXT NOT NULL,
+      content TEXT NOT NULL,
+      metadata TEXT NOT NULL,
+      embedding TEXT,
+      created_at INTEGER NOT NULL,
+      FOREIGN KEY (knowledge_base_id) REFERENCES knowledge_bases(id) ON DELETE CASCADE
+    )
+  `);
+
   // Insert default settings if not exists
   const defaultSettings = {
     defaultProvider: 'claude',
