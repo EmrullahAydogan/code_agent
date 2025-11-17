@@ -1,0 +1,18 @@
+{
+  "name": "@local-code-agent/shared",
+  "version": "1.0.0",
+  "description": "Shared types and utilities for local code agent platform",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "watch": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
