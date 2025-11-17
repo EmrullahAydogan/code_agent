@@ -7,9 +7,14 @@ import { settingsRoutes } from './settings';
 import { conversationRoutes } from './conversations';
 import { templateRoutes } from './templates';
 import { analyticsRoutes } from './analytics';
+import { workflowRoutes } from './workflows';
+import { codeReviewRoutes } from './code-review';
+import { testingRoutes } from './testing';
+import { knowledgeBaseRoutes } from './knowledge-base';
+import { pluginRoutes } from './plugins';
 
 export function setupRoutes(app: Express, io: SocketIOServer) {
-  // Pass io to routes that need to emit events
+  // Core routes
   app.use('/api/agents', agentRoutes(io));
   app.use('/api/tasks', taskRoutes(io));
   app.use('/api/projects', projectRoutes(io));
@@ -17,4 +22,11 @@ export function setupRoutes(app: Express, io: SocketIOServer) {
   app.use('/api/conversations', conversationRoutes(io));
   app.use('/api/templates', templateRoutes());
   app.use('/api/analytics', analyticsRoutes());
+
+  // Advanced features
+  app.use('/api/workflows', workflowRoutes(io));
+  app.use('/api/code-reviews', codeReviewRoutes());
+  app.use('/api/testing', testingRoutes());
+  app.use('/api/knowledge-bases', knowledgeBaseRoutes());
+  app.use('/api/plugins', pluginRoutes());
 }
