@@ -37,11 +37,16 @@ pnpm-debug.log*
 *.db
 *.sqlite
 *.sqlite3
+data/
 
 # Temporary files
 tmp/
 temp/
 *.tmp
+
+# User projects and uploads
+projects/
+uploads/
 
 # Build artifacts
 *.tsbuildinfo

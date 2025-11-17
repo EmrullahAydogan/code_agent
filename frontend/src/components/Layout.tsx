@@ -1,5 +1,16 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Bot, FolderKanban, Settings, Sparkles, BarChart3 } from 'lucide-react';
+import {
+  Bot,
+  FolderKanban,
+  Settings,
+  Sparkles,
+  BarChart3,
+  Workflow,
+  FileSearch,
+  FlaskConical,
+  Database,
+  Puzzle
+} from 'lucide-react';
 import clsx from 'clsx';
 import { useWebSocket } from '../providers/WebSocketProvider';
 
@@ -11,6 +22,11 @@ export const Layout = () => {
     { name: 'Agents', href: '/agents', icon: Bot },
     { name: 'Templates', href: '/templates', icon: Sparkles },
     { name: 'Projects', href: '/projects', icon: FolderKanban },
+    { name: 'Workflows', href: '/workflows', icon: Workflow },
+    { name: 'Code Reviews', href: '/code-reviews', icon: FileSearch },
+    { name: 'Testing', href: '/testing', icon: FlaskConical },
+    { name: 'Knowledge', href: '/knowledge', icon: Database },
+    { name: 'Plugins', href: '/plugins', icon: Puzzle },
     { name: 'Analytics', href: '/analytics', icon: BarChart3 },
     { name: 'Settings', href: '/settings', icon: Settings },
   ];
