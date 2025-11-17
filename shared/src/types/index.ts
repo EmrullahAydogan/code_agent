@@ -353,3 +353,243 @@ export interface CreateAgentFromTemplate {
   apiKey: string;
   projectId?: string;
 }
+
+// Multi-Agent Collaboration Types
+export enum WorkflowType {
+  SEQUENTIAL = 'sequential',
+  PARALLEL = 'parallel',
+  CONDITIONAL = 'conditional',
+  LOOP = 'loop',
+}
+
+export enum WorkflowStepStatus {
+  PENDING = 'pending',
+  RUNNING = 'running',
+  COMPLETED = 'completed',
+  FAILED = 'failed',
+  SKIPPED = 'skipped',
+}
+
+export interface WorkflowStep {
+  id: string;
+  agentId: string;
+  name: string;
+  prompt: string;
+  status: WorkflowStepStatus;
+  result?: string;
+  error?: string;
+  dependsOn?: string[]; // Step IDs that must complete first
+  condition?: string; // JavaScript expression for conditional execution
+  startedAt?: Date;
+  completedAt?: Date;
+}
+
+export interface Workflow {
+  id: string;
+  name: string;
+  description?: string;
+  type: WorkflowType;
+  steps: WorkflowStep[];
+  projectId?: string;
+  createdBy: string; // Agent ID that created the workflow
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  currentStepIndex?: number;
+  result?: any;
+  error?: string;
+  createdAt: Date;
+  startedAt?: Date;
+  completedAt?: Date;
+}
+
+export interface CreateWorkflowRequest {
+  name: string;
+  description?: string;
+  type: WorkflowType;
+  steps: Omit<WorkflowStep, 'id' | 'status' | 'startedAt' | 'completedAt'>[];
+  projectId?: string;
+}
+
+export interface AgentCommunication {
+  id: string;
+  fromAgentId: string;
+  toAgentId: string;
+  message: string;
+  context?: Record<string, any>;
+  replyTo?: string; // Message ID this is replying to
+  createdAt: Date;
+  readAt?: Date;
+}
+
+export interface AgentDelegation {
+  id: string;
+  fromAgentId: string;
+  toAgentId: string;
+  taskId: string;
+  reason: string;
+  status: 'pending' | 'accepted' | 'rejected' | 'completed';
+  result?: string;
+  createdAt: Date;
+  completedAt?: Date;
+}
+
+// Plugin System Types
+export enum PluginType {
+  TOOL = 'tool',
+  PROVIDER = 'provider',
+  INTEGRATION = 'integration',
+  UI = 'ui',
+}
+
+export interface Plugin {
+  id: string;
+  name: string;
+  description: string;
+  version: string;
+  type: PluginType;
+  author: string;
+  enabled: boolean;
+  config?: Record<string, any>;
+  permissions: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PluginManifest {
+  name: string;
+  version: string;
+  description: string;
+  author: string;
+  type: PluginType;
+  main: string; // Entry point file
+  permissions: string[];
+  dependencies?: Record<string, string>;
+  config?: {
+    schema: Record<string, any>;
+    defaults: Record<string, any>;
+  };
+}
+
+// Code Review Types
+export enum ReviewSeverity {
+  INFO = 'info',
+  WARNING = 'warning',
+  ERROR = 'error',
+  CRITICAL = 'critical',
+}
+
+export interface CodeReviewIssue {
+  id: string;
+  file: string;
+  line: number;
+  column?: number;
+  severity: ReviewSeverity;
+  category: string; // 'security', 'performance', 'bug', 'style', etc.
+  message: string;
+  suggestion?: string;
+  code?: string; // The problematic code snippet
+}
+
+export interface CodeReview {
+  id: string;
+  agentId: string;
+  projectId: string;
+  files: string[];
+  issues: CodeReviewIssue[];
+  summary: string;
+  score: number; // 0-100
+  createdAt: Date;
+}
+
+export interface CreateCodeReviewRequest {
+  agentId: string;
+  projectId: string;
+  files?: string[]; // If not specified, review all files
+  focus?: string[]; // Focus areas: ['security', 'performance', 'bugs']
+}
+
+// Testing Types
+export interface TestCase {
+  id: string;
+  name: string;
+  description?: string;
+  code: string;
+  expectedOutput?: string;
+  status: 'pending' | 'running' | 'passed' | 'failed';
+  error?: string;
+  duration?: number;
+  createdAt: Date;
+  runAt?: Date;
+}
+
+export interface TestSuite {
+  id: string;
+  name: string;
+  description?: string;
+  projectId: string;
+  agentId: string;
+  testCases: TestCase[];
+  coverage?: number;
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  totalTests: number;
+  passedTests: number;
+  failedTests: number;
+  createdAt: Date;
+  completedAt?: Date;
+}
+
+export interface CreateTestSuiteRequest {
+  name: string;
+  description?: string;
+  projectId: string;
+  agentId: string;
+  filePath?: string; // Generate tests for specific file
+  autoGenerate?: boolean; // Auto-generate tests
+}
+
+// RAG (Retrieval Augmented Generation) Types
+export interface DocumentChunk {
+  id: string;
+  content: string;
+  metadata: {
+    file: string;
+    startLine: number;
+    endLine: number;
+    language?: string;
+    [key: string]: any;
+  };
+  embedding?: number[];
+  createdAt: Date;
+}
+
+export interface KnowledgeBase {
+  id: string;
+  name: string;
+  description?: string;
+  projectId: string;
+  documents: number;
+  chunks: number;
+  indexed: boolean;
+  indexedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface SearchQuery {
+  query: string;
+  limit?: number;
+  filter?: Record<string, any>;
+}
+
+export interface SearchResult {
+  chunk: DocumentChunk;
+  score: number;
+  distance?: number;
+}
+
+export interface CreateKnowledgeBaseRequest {
+  name: string;
+  description?: string;
+  projectId: string;
+  files?: string[]; // Specific files to index
+  autoIndex?: boolean;
+}
