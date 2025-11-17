@@ -138,9 +138,9 @@ export const WorkflowsPage = () => {
                     </span>
                     <div className={clsx(
                       'flex items-center gap-1 px-2 py-1 rounded text-xs font-medium',
-                      getStatusColor(workflow.status)
+                      getStatusColor(workflow.status as WorkflowStatus)
                     )}>
-                      {getStatusIcon(workflow.status)}
+                      {getStatusIcon(workflow.status as WorkflowStatus)}
                       {workflow.status}
                     </div>
                   </div>

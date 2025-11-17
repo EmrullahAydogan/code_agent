@@ -168,13 +168,13 @@ export function projectRoutes(io: SocketIOServer) {
   // Get project files (basic file listing)
   router.get('/:id/files', (req, res) => {
     try {
-      const project = db.prepare('SELECT * FROM projects WHERE id = ?').get(req.params.id);
+      const project = db.prepare('SELECT * FROM projects WHERE id = ?').get(req.params.id) as any;
 
       if (!project) {
         return res.status(404).json({ success: false, error: 'Project not found' });
       }
 
-      const projectPath = project.path;
+      const projectPath = project.path as string;
       const files = getProjectFiles(projectPath);
 
       res.json({ success: true, data: files });
