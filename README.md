@@ -1,184 +1,173 @@
 # Local Code Agent Platform
 
-A powerful, local web-based code agent platform inspired by Claude Code. Create and manage multiple AI agents, execute tasks across different projects, and integrate with various AI providers—all from a professional web interface.
+A professional, web-based AI code agent platform running entirely on your local machine. Build, manage, and orchestrate multiple AI agents across your projects with support for Claude, ChatGPT, Gemini, and DeepSeek.
 
 ## Features
 
-- 🤖 **Multi-Agent Management**: Create and manage multiple AI agents simultaneously
-- 🔌 **Multiple AI Providers**: Support for Claude, ChatGPT, Gemini, DeepSeek, and more
-- 🚀 **Real-time Execution**: Monitor tasks and agent activities in real-time
-- 📁 **Project Workspace Management**: Organize and switch between multiple projects
-- ⚙️ **UI-Based Configuration**: Configure all settings through an intuitive web interface
-- 🔒 **Local & Private**: Runs entirely on your local machine
-- 💼 **Professional Architecture**: Clean, maintainable, and scalable codebase
+### Core Platform
+- **Multi-Agent Management** - Create and manage multiple AI agents with different configurations
+- **Real-time Task Delegation** - Assign tasks to agents across multiple projects simultaneously
+- **Project Organization** - Manage multiple code projects with file browsing and operations
+- **Live WebSocket Updates** - Real-time status updates and task execution feedback
 
-## Architecture
+### AI Provider Support
+- **Anthropic Claude** - Claude 3.5 Sonnet, Opus, Sonnet, Haiku
+- **OpenAI ChatGPT** - GPT-4, GPT-4 Turbo, GPT-3.5 Turbo, GPT-4o
+- **Google Gemini** - Gemini Pro, Gemini Pro Vision, Gemini Ultra
+- **DeepSeek** - DeepSeek Chat, DeepSeek Coder
 
-```
-┌─────────────────────────────────────────────┐
-│          Web Interface (React)              │
-│  ┌─────────┐ ┌─────────┐ ┌─────────────┐  │
-│  │ Agents  │ │Projects │ │  Settings   │  │
-│  └─────────┘ └─────────┘ └─────────────┘  │
-└─────────────────┬───────────────────────────┘
-                  │ WebSocket + REST
-┌─────────────────┴───────────────────────────┐
-│         Backend (Node.js + Express)         │
-│  ┌──────────────────────────────────────┐  │
-│  │      Agent Orchestration Engine       │  │
-│  └──────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────┐  │
-│  │    Unified AI Provider Interface      │  │
-│  │  ┌────────┐ ┌────────┐ ┌──────────┐  │  │
-│  │  │ Claude │ │  GPT   │ │  Gemini  │  │  │
-│  │  └────────┘ └────────┘ └──────────┘  │  │
-│  └──────────────────────────────────────┘  │
-│  ┌──────────────────────────────────────┐  │
-│  │       SQLite Database (Local)         │  │
-│  └──────────────────────────────────────┘  │
-└─────────────────────────────────────────────┘
-```
+### Advanced Features
+
+#### 1. Multi-Agent Workflows
+- Sequential, parallel, conditional, and loop execution patterns
+- Step dependencies and context building
+- Real-time workflow status tracking
+- Automatic error handling and recovery
+
+#### 2. AI-Powered Code Review
+- Automated analysis for security vulnerabilities
+- Performance optimization suggestions
+- Bug detection and style improvements
+- Severity-based issue categorization (Critical, Error, Warning, Info)
+- Project-wide review statistics
+
+#### 3. Intelligent Testing
+- AI-powered test generation from source code
+- Automated test suite execution
+- Isolated test environments
+- Pass/fail tracking and execution metrics
+
+#### 4. Knowledge Base (RAG)
+- Semantic search across project documentation
+- Document chunking and indexing
+- Context-aware code search
+- Multi-file knowledge aggregation
+
+#### 5. Plugin System
+- Extensible architecture for custom tools
+- Provider plugins for additional AI services
+- Integration plugins for external services
+- Permission-based security model
+
+### File Operations (16 Tools)
+- READ_FILE, WRITE_FILE, EDIT_FILE
+- LIST_FILES, SEARCH_FILES, DELETE_FILE
+- CREATE_DIRECTORY, LIST_DIRECTORY
+- COPY_FILE, MOVE_FILE, GET_FILE_INFO
+- FIND_IN_FILES, REPLACE_IN_FILES
+- BATCH_EDIT, CREATE_FILE, APPEND_TO_FILE
+
+### Git Integration
+- GIT_STATUS, GIT_DIFF, GIT_LOG
+- GIT_COMMIT, GIT_PUSH, GIT_PULL
+- GIT_BRANCH, GIT_CHECKOUT
+
+### Terminal Integration
+- EXECUTE_COMMAND - Run shell commands
+- Real-time output streaming
+- Command history and logging
 
 ## Quick Start
 
 ### Prerequisites
-
-- Node.js >= 18.0.0
-- npm >= 9.0.0
+- Node.js 18+ and npm
+- Git
+- At least one AI provider API key (Gemini, DeepSeek, Claude, or OpenAI)
 
 ### Installation
 
-```bash
-# Install dependencies
+1. Clone and install:
+\`\`\`bash
+git clone <repository-url>
+cd code_agent
 npm install
+\`\`\`
 
-# Set up environment variables
-cp backend/.env.example backend/.env
-# Edit backend/.env with your API keys
-```
+2. Configure environment:
+\`\`\`bash
+cp .env.example .env
+# Edit .env with your API keys
+\`\`\`
 
-### Development
+3. Start development servers:
+\`\`\`bash
+# Terminal 1 - Backend
+npm run dev --workspace=backend
 
-```bash
-# Start both frontend and backend in development mode
-npm run dev
+# Terminal 2 - Frontend  
+npm run dev --workspace=frontend
+\`\`\`
 
-# Or start them separately:
-npm run dev:frontend  # Frontend at http://localhost:5173
-npm run dev:backend   # Backend at http://localhost:3000
-```
+4. Open http://localhost:5173
 
-### Production Build
+## Docker Deployment
 
-```bash
-# Build all packages
-npm run build
+\`\`\`bash
+# Configure environment
+cp .env.example .env
 
-# Start the production server
-npm start
-```
+# Start services
+docker-compose up -d
 
-## Configuration
-
-All configuration can be managed through the web UI at `http://localhost:5173/settings` or by editing the `.env` file:
-
-```env
-# AI Provider API Keys
-ANTHROPIC_API_KEY=your_claude_api_key
-OPENAI_API_KEY=your_openai_api_key
-GOOGLE_API_KEY=your_gemini_api_key
-DEEPSEEK_API_KEY=your_deepseek_api_key
-
-# Server Configuration
-PORT=3000
-NODE_ENV=development
-
-# Database
-DATABASE_PATH=./data/agents.db
-```
+# Access at http://localhost:5173
+\`\`\`
 
 ## Project Structure
 
-```
-local-code-agent-platform/
-├── frontend/           # React web interface
+\`\`\`
+code_agent/
+├── backend/                 # Node.js + Express API
 │   ├── src/
-│   │   ├── components/ # UI components
-│   │   ├── pages/      # Page components
-│   │   ├── services/   # API clients
-│   │   ├── stores/     # State management
-│   │   └── types/      # TypeScript types
-│   └── package.json
-├── backend/            # Node.js API server
+│   │   ├── routes/          # API endpoints  
+│   │   ├── services/        # Business logic
+│   │   │   ├── ai-providers/  # AI integrations
+│   │   │   ├── code-reviewer.ts
+│   │   │   ├── test-runner.ts
+│   │   │   ├── rag-engine.ts
+│   │   │   └── workflow-executor.ts
+│   │   └── database/        # SQLite setup
+│   └── Dockerfile
+│
+├── frontend/                # React + Vite SPA
 │   ├── src/
-│   │   ├── agents/     # Agent management
-│   │   ├── providers/  # AI provider adapters
-│   │   ├── services/   # Business logic
-│   │   ├── routes/     # API routes
-│   │   └── database/   # Database models
-│   └── package.json
-├── shared/             # Shared types and utilities
-│   └── src/
-│       └── types/      # Shared TypeScript types
-└── package.json        # Root package.json
-```
+│   │   ├── components/      # UI components
+│   │   ├── pages/           # Route pages
+│   │   ├── providers/       # React context
+│   │   └── services/        # API client
+│   ├── Dockerfile
+│   └── nginx.conf
+│
+├── shared/                  # Shared TypeScript types
+├── docker-compose.yml
+└── README.md
+\`\`\`
 
-## Usage
+## API Keys
 
-### Creating an Agent
+Obtain API keys from:
+- **Gemini**: https://makersuite.google.com/app/apikey
+- **DeepSeek**: https://platform.deepseek.com/
+- **Claude**: https://console.anthropic.com/
+- **OpenAI**: https://platform.openai.com/api-keys
 
-1. Navigate to the **Agents** tab
-2. Click **Create New Agent**
-3. Configure:
-   - Agent name
-   - AI provider (Claude, GPT, Gemini, etc.)
-   - Model selection
-   - System prompts
-4. Click **Create**
+Add to \`.env\`:
+\`\`\`env
+GEMINI_API_KEY=your_key_here
+DEEPSEEK_API_KEY=your_key_here
+CLAUDE_API_KEY=your_key_here  
+OPENAI_API_KEY=your_key_here
+\`\`\`
 
-### Managing Projects
+## Technology Stack
 
-1. Go to **Projects** tab
-2. Add a project workspace by selecting a directory
-3. Assign agents to projects
-4. Execute tasks through the chat interface
-
-### Real-time Task Execution
-
-- View agent activities in real-time
-- Monitor task progress
-- See logs and outputs
-- Cancel or modify running tasks
-
-## API Documentation
-
-### REST Endpoints
-
-- `GET /api/agents` - List all agents
-- `POST /api/agents` - Create a new agent
-- `GET /api/agents/:id` - Get agent details
-- `PUT /api/agents/:id` - Update agent
-- `DELETE /api/agents/:id` - Delete agent
-- `POST /api/agents/:id/execute` - Execute a task
-
-### WebSocket Events
-
-- `agent:created` - New agent created
-- `agent:updated` - Agent updated
-- `agent:deleted` - Agent deleted
-- `task:started` - Task execution started
-- `task:progress` - Task progress update
-- `task:completed` - Task completed
-- `task:error` - Task error occurred
-
-## Contributing
-
-Contributions are welcome! Please read our contributing guidelines before submitting PRs.
+**Backend**: Node.js, Express, TypeScript, Socket.io, SQLite
+**Frontend**: React 18, TypeScript, Vite, TailwindCSS, TanStack Query
+**AI SDKs**: @anthropic-ai/sdk, openai, @google/generative-ai
 
 ## License
 
-MIT License - see LICENSE file for details
+MIT License
 
-## Support
+---
 
-For issues and questions, please open an issue on the GitHub repository.
+**Privacy-first, local-first architecture - All data stays on your machine**
