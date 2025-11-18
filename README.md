@@ -132,36 +132,72 @@ A professional, web-based AI code agent platform running entirely on your local 
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- Node.js 18+ and npm
-- Git
-- At least one AI provider API key (Gemini, DeepSeek, Claude, or OpenAI)
+### One-Command Installation (All Platforms)
 
-### Installation
-
-1. Clone and install:
 ```bash
 git clone <repository-url>
 cd code_agent
-npm install
+npm install && npm run setup
 ```
 
-2. Configure environment:
+**Add your API keys** to `.env` file, then start:
+
 ```bash
-cp .env.example .env
-# Edit .env with your API keys
+npm start
 ```
 
-3. Start development servers:
-```bash
-# Terminal 1 - Backend
-npm run dev --workspace=backend
+Open http://localhost:5173 - Done! 🎉
 
-# Terminal 2 - Frontend
-npm run dev --workspace=frontend
-```
+### Detailed Installation
 
-4. Open http://localhost:5173
+**Prerequisites:**
+- Node.js 18+ and npm ([Download](https://nodejs.org/))
+- At least one AI provider API key
+
+**Step by Step:**
+
+1. **Clone and Install**
+   ```bash
+   git clone <repository-url>
+   cd code_agent
+   npm install && npm run setup
+   ```
+
+2. **Configure API Keys**
+
+   Windows:
+   ```cmd
+   notepad .env
+   ```
+
+   macOS/Linux:
+   ```bash
+   nano .env
+   ```
+
+   Add at least one API key:
+   ```env
+   GEMINI_API_KEY=your_key_here
+   # or
+   DEEPSEEK_API_KEY=your_key_here
+   # or
+   CLAUDE_API_KEY=your_key_here
+   # or
+   OPENAI_API_KEY=your_key_here
+   ```
+
+3. **Start the Application**
+   ```bash
+   npm start
+   ```
+
+   This starts both backend (port 3000) and frontend (port 5173)
+
+4. **Access**
+
+   Open http://localhost:5173 in your browser
+
+**Alternative:** See [INSTALLATION.md](./INSTALLATION.md) for platform-specific instructions
 
 ## 🐳 Docker Deployment
 

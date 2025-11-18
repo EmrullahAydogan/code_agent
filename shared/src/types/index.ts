@@ -66,9 +66,12 @@ export interface Task {
   agentId: string;
   projectId?: string;
   prompt: string;
+  title?: string;
+  description?: string;
   status: TaskStatus;
-  result?: string;
+  result?: string | Record<string, any>;
   error?: string;
+  progress?: number;
   startedAt?: Date;
   completedAt?: Date;
   createdAt: Date;
@@ -219,6 +222,7 @@ export interface Message {
   toolCalls?: ToolCall[];
   toolResults?: ToolResult[];
   createdAt: Date;
+  timestamp?: Date;
 }
 
 export interface Conversation {
