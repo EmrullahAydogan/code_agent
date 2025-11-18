@@ -12,38 +12,49 @@ import { CodeReviewsPage } from './pages/CodeReviewsPage';
 import { TestingPage } from './pages/TestingPage';
 import { KnowledgeBasePage } from './pages/KnowledgeBasePage';
 import { PluginsPage } from './pages/PluginsPage';
+import { ApiDocsPage } from './pages/ApiDocsPage';
 import { WebSocketProvider } from './providers/WebSocketProvider';
 import { ToastProvider } from './providers/ToastProvider';
 import { ThemeProvider } from './providers/ThemeProvider';
+import { I18nProvider } from './providers/I18nProvider';
+import { KeyboardShortcutsProvider } from './providers/KeyboardShortcutsProvider';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { DebugConsole } from './components/DebugConsole';
 
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider>
-        <ToastProvider>
-          <WebSocketProvider>
-            <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Navigate to="/agents" replace />} />
-            <Route path="agents" element={<AgentsPage />} />
-            <Route path="agents/:id" element={<AgentDetailPage />} />
-            <Route path="agents/:id/chat" element={<AgentChatPage />} />
-            <Route path="templates" element={<TemplatesPage />} />
-            <Route path="projects" element={<ProjectsPage />} />
-            <Route path="workflows" element={<WorkflowsPage />} />
-            <Route path="code-reviews" element={<CodeReviewsPage />} />
-            <Route path="testing" element={<TestingPage />} />
-            <Route path="knowledge" element={<KnowledgeBasePage />} />
-            <Route path="plugins" element={<PluginsPage />} />
-            <Route path="analytics" element={<AnalyticsPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-          </Route>
-        </Routes>
-          </BrowserRouter>
-        </WebSocketProvider>
-      </ToastProvider>
+      <I18nProvider>
+        <ThemeProvider>
+          <KeyboardShortcutsProvider>
+            <ToastProvider>
+              <WebSocketProvider>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Layout />}>
+                      <Route index element={<Navigate to="/agents" replace />} />
+                      <Route path="agents" element={<AgentsPage />} />
+                      <Route path="agents/:id" element={<AgentDetailPage />} />
+                      <Route path="agents/:id/chat" element={<AgentChatPage />} />
+                      <Route path="templates" element={<TemplatesPage />} />
+                      <Route path="projects" element={<ProjectsPage />} />
+                      <Route path="workflows" element={<WorkflowsPage />} />
+                      <Route path="code-reviews" element={<CodeReviewsPage />} />
+                      <Route path="testing" element={<TestingPage />} />
+                      <Route path="knowledge" element={<KnowledgeBasePage />} />
+                      <Route path="plugins" element={<PluginsPage />} />
+                      <Route path="analytics" element={<AnalyticsPage />} />
+                      <Route path="api-docs" element={<ApiDocsPage />} />
+                      <Route path="settings" element={<SettingsPage />} />
+                    </Route>
+                  </Routes>
+                </BrowserRouter>
+                <DebugConsole enabled={true} />
+              </WebSocketProvider>
+            </ToastProvider>
+          </KeyboardShortcutsProvider>
+        </ThemeProvider>
+      </I18nProvider>
     </ErrorBoundary>
   );
 }

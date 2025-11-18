@@ -9,7 +9,8 @@ import {
   FileSearch,
   FlaskConical,
   Database,
-  Puzzle
+  Puzzle,
+  Book
 } from 'lucide-react';
 import clsx from 'clsx';
 import { useWebSocket } from '../providers/WebSocketProvider';
@@ -28,25 +29,26 @@ export const Layout = () => {
     { name: 'Knowledge', href: '/knowledge', icon: Database },
     { name: 'Plugins', href: '/plugins', icon: Puzzle },
     { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+    { name: 'API Docs', href: '/api-docs', icon: Book },
     { name: 'Settings', href: '/settings', icon: Settings },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Sidebar */}
-      <div className="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200">
+      <div className="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-200">
-            <Bot className="w-8 h-8 text-blue-600" />
+          <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <Bot className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             <div>
-              <h1 className="text-lg font-bold text-gray-900">Code Agent</h1>
+              <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">Code Agent</h1>
               <div className="flex items-center gap-2">
                 <div className={clsx(
                   'w-2 h-2 rounded-full',
                   connected ? 'bg-green-500' : 'bg-red-500'
                 )} />
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-gray-500 dark:text-gray-400">
                   {connected ? 'Connected' : 'Disconnected'}
                 </span>
               </div>
@@ -54,7 +56,7 @@ export const Layout = () => {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-4 py-4 space-y-1">
+          <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
             {navigation.map((item) => {
               const isActive = location.pathname.startsWith(item.href);
               const Icon = item.icon;
@@ -65,8 +67,8 @@ export const Layout = () => {
                   className={clsx(
                     'flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors',
                     isActive
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                   )}
                 >
                   <Icon className="w-5 h-5" />
@@ -77,8 +79,8 @@ export const Layout = () => {
           </nav>
 
           {/* Footer */}
-          <div className="px-6 py-4 border-t border-gray-200">
-            <p className="text-xs text-gray-500">
+          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               Local Code Agent Platform v1.0.0
             </p>
           </div>
