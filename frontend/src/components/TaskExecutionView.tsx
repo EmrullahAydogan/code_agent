@@ -34,13 +34,13 @@ export const TaskExecutionView = ({ taskId, onComplete, onError }: TaskExecution
   const [elapsed, setElapsed] = useState(0);
   const { socket } = useWebSocket();
 
-  const { data: task, refetch } = useQuery({
+  const { data: task, refetch } = useQuery<Task>({
     queryKey: ['task', taskId],
     queryFn: async () => {
       const response = await tasksApi.getById(taskId);
-      return response.data.data;
+      return response.data.data as Task;
     },
-    refetchInterval: task?.status === 'running' ? 1000 : false,
+    refetchInterval: (query) => query.state.data?.status === 'running' ? 1000 : false,
   });
 
   useEffect(() => {

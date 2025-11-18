@@ -118,7 +118,7 @@ export const AgentDetailPage = () => {
                     </div>
                     {task.result && (
                       <p className="text-sm text-gray-900 mt-2 whitespace-pre-wrap">
-                        {task.result}
+                        {typeof task.result === 'string' ? task.result : JSON.stringify(task.result, null, 2)}
                       </p>
                     )}
                   </div>
@@ -127,7 +127,7 @@ export const AgentDetailPage = () => {
                 <div className="flex items-start gap-3">
                   <div className="flex-1 max-w-3xl bg-gray-100 rounded-lg px-4 py-3">
                     <p className="text-sm text-gray-900 whitespace-pre-wrap">
-                      {task.result}
+                      {typeof task.result === 'string' ? task.result : JSON.stringify(task.result, null, 2)}
                     </p>
                   </div>
                 </div>

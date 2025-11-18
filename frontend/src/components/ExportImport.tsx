@@ -147,10 +147,11 @@ export const ExportImport = ({ onImportComplete }: ExportImportProps) => {
       if (importData.tasks && exportOptions.tasks) {
         for (const task of importData.tasks) {
           try {
-            await tasksApi.create(task);
-            importedCount++;
+            // Note: Tasks need to be re-executed, not just imported
+            // This is a limitation - tasks are execution results, not configurations
+            console.warn('Task import skipped:', task.id, '- tasks cannot be directly imported');
           } catch (err) {
-            console.error('Failed to import task:', task.title, err);
+            console.error('Failed to import task:', task.id, err);
           }
         }
       }

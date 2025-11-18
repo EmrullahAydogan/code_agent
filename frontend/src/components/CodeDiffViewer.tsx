@@ -41,13 +41,13 @@ export const CodeDiffViewer = ({
   }, [diffText]);
 
   const tokens = useMemo(() => {
-    if (!files.length) return {};
+    if (!files.length) return { old: [], new: [] };
 
     try {
       return tokenize(files[0].hunks);
     } catch (err) {
       console.error('Failed to tokenize:', err);
-      return {};
+      return { old: [], new: [] };
     }
   }, [files]);
 
@@ -164,23 +164,24 @@ export const CodeDiffViewer = ({
             hunks={file.hunks}
             tokens={tokens}
             renderGutter={({ change }) => {
+              const lineNum = (change as any).lineNumber || '';
               if (change.type === 'insert') {
                 return (
                   <div className="w-8 text-center text-xs text-green-600 dark:text-green-400">
-                    {change.lineNumber}
+                    {lineNum}
                   </div>
                 );
               }
               if (change.type === 'delete') {
                 return (
                   <div className="w-8 text-center text-xs text-red-600 dark:text-red-400">
-                    {change.lineNumber}
+                    {lineNum}
                   </div>
                 );
               }
               return (
                 <div className="w-8 text-center text-xs text-gray-400 dark:text-gray-500">
-                  {change.lineNumber}
+                  {lineNum}
                 </div>
               );
             }}

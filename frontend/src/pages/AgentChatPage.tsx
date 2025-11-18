@@ -69,8 +69,10 @@ export const AgentChatPage = () => {
       title: `Chat - ${new Date().toLocaleString()}`,
     }),
     onSuccess: (response) => {
-      setConversationId(response.data.data.id);
-      success('New conversation started');
+      if (response.data.data) {
+        setConversationId(response.data.data.id);
+        success('New conversation started');
+      }
     },
   });
 
@@ -78,7 +80,8 @@ export const AgentChatPage = () => {
     mutationFn: async (content: string) => {
       if (!conversationId) {
         const newConv = await createConversationMutation.mutateAsync();
-        const newConvId = newConv.data.data.id;
+        const newConvId = newConv.data.data?.id;
+        if (!newConvId) throw new Error('Failed to create conversation');
         return conversationsApi.addMessage(newConvId, {
           role: 'user',
           content,
@@ -154,7 +157,7 @@ export const AgentChatPage = () => {
         >
           <MessageContent content={message.content} isUser={isUser} />
           <div className={`text-xs mt-2 ${isUser ? 'text-blue-100' : 'text-gray-500'}`}>
-            {new Date(message.timestamp).toLocaleTimeString()}
+            {new Date(message.timestamp || message.createdAt).toLocaleTimeString()}
           </div>
         </div>
 
